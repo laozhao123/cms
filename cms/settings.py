@@ -32,8 +32,8 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
-    'django.contrib.admin',
-    'django.contrib.auth',
+    'django.contrib.admin', # 后台管理模块
+    'django.contrib.auth',   # 用户认证模块
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
@@ -59,6 +59,8 @@ MIDDLEWARE = [
 #4、添加白名单
 CORS_ORIGIN_WHITELIST = (
     '127.0.0.1:8080',
+
+
 )
 CORS_ALLOW_CREDENTIALS = True  # 指明在跨域访问中，后端是否支持对cookie的操作。
 
@@ -150,6 +152,14 @@ USE_TZ = True
 STATIC_URL = '/static/'
 
 CACHES = {
+# 保存短信验证码
+        "sms_codes": {
+            "BACKEND": "django_redis.cache.RedisCache",
+            "LOCATION": "redis://127.0.0.1:6379/2",
+            "OPTIONS": {
+                "CLIENT_CLASS": "django_redis.client.DefaultClient",
+            }
+        },
     "default": {  # 缓存数据， 如果省份数据的缓存
         "BACKEND": "django_redis.cache.RedisCache",
         "LOCATION": "redis://127.0.0.1:6379/0",
