@@ -195,3 +195,5 @@ CACHES = {
 
 # 注册自定义的用户模型类
 AUTH_USER_MODEL = 'users.User'
+
+GENERATED_STATIC_HTML_FILES_DIR=os.path.join(BASE_DIR,'front_end_pc')
