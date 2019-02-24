@@ -31,4 +31,4 @@ class SmsCodeView(APIView):
         # CCP().send_template_sms(mobile, [sms_code, 5], 1)
 
         # 5. 响应数据
-        return Response({'message': 'OK'})
+        return Response({'message': 'OK' })
