@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'users',
     'goods',
     'news',
+    'verifications'
 ]
 
 MIDDLEWARE = [
@@ -59,6 +60,8 @@ MIDDLEWARE = [
 #4、添加白名单
 CORS_ORIGIN_WHITELIST = (
     '127.0.0.1:8080',
+    'localhost:8080',
+
 
 
 )
