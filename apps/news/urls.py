@@ -3,5 +3,6 @@ from django.conf.urls import url
 from news import views
 
 urlpatterns = [
-    # url(r'^is_slideNews/$',views.Is_slideNews.as_view()),
+    url(r'^top/$',views.TopNews.as_view()),
+    url(r'^cate/$',views.CateNews.as_view()),
 ]

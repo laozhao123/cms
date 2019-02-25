@@ -16,12 +16,27 @@ var vm = new Vue({
     methods: {
         // 初始化显示顶部的新闻数据
         init_top_news: function () {
-           
+           axios.get('http://127.0.0.1:8000/news/top/')
+               .then(response=>{
+                this.slide_news=response.data['slide_news'];
+                this.top_news=response.data['top_news'];
+                this.image_news=response.data['img_news'];
+
+           }).catch(error=>{
+                console.log(error.response);
+           })
         },
 
         // 初始化显示类别新闻数据
         init_category_news: function () {
-           
+           axios.get('http://127.0.0.1:8000/news/cate/')
+               .then(response=>{
+                this.categories=response.data;
+
+
+           }).catch(error=>{
+                console.log(error.response);
+           })
         },
     },
 

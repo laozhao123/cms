@@ -8,11 +8,9 @@
     <script type="text/javascript" src="js/jquery-1.11.2.min.js"></script>
     <script type="text/javascript" src="js/jquery.flexslider-min.js"></script>
     <script type="text/javascript" src="js/common.js"></script>
-	<script type="text/javascript" src="js/date.js"></script>
 
     <script type="text/javascript">
         <!-- 开始轮播图动画 -->
-
         $(function () {
             $("#focus-box").flexslider({
                 directionNav: false,
@@ -49,94 +47,48 @@
                     <div id="focus-box" class="focus-box">
 
                         <!-- 轮播图 -->
-                        <ul class="slides">
-                            
-                            <li>
-                                <a title="抢先实拍猎豹CS10 霸气时尚2.0T涡轮增压”" href="#">
+                        <ul class="slides" v-cloak>
+                            <li v-for="(news, index) in slide_news">
+                                <a href="">
                                     <span class="note-bg"></span>
-                                    <span class="note-txt">抢先实拍猎豹CS10 霸气时尚2.0T涡轮增压</span>
-                                    <img src="/upload/201504/16/201504161218505373.jpg"/>
+                                    <span class="note-txt">{{ news.title }}</span>
+                                    <img :src="news.img_url"/>
                                 </a>
                             </li>
-                            
-                            <li>
-                                <a title="58同城与赶集网最快今日将宣布合并”" href="#">
-                                    <span class="note-bg"></span>
-                                    <span class="note-txt">58同城与赶集网最快今日将宣布合并</span>
-                                    <img src="/upload/201504/16/201504161303162262.jpg"/>
-                                </a>
-                            </li>
-                            
-                            <li>
-                                <a title="京东全球购将会沦为“海外代购””" href="#">
-                                    <span class="note-bg"></span>
-                                    <span class="note-txt">京东全球购将会沦为“海外代购”</span>
-                                    <img src="/upload/201504/17/201504171107187253.jpg"/>
-                                </a>
-                            </li>
-                            
                         </ul>
 
                     </div>
                 </div>
 
-                <!-- 每5条的第一条,字体高亮突出 -->
+                <!-- 每5条的第一条,字体高亮突出-->
                 <div class="left-455">
                     <ul class="side-txt-list">
-                        <li class="tit"><a href="">京东全球购将会沦为“海外代购”</a></li>
-                        <li><span>2015-04-17</span><a href="">三星中国手机份额降至8% 国产厂商发起海外包抄</a></li>
-                        <li><span>2015-04-17</span><a href="">三星中国手机份额降至8% 国产厂商发起海外包抄</a></li>
-                        <li><span>2015-04-17</span><a href="">三星中国手机份额降至8% 国产厂商发起海外包抄</a></li>
-                        <li><span>2015-04-17</span><a href="">三星中国手机份额降至8% 国产厂商发起海外包抄</a></li>
 
-                        <li class="tit"><a href="">购房者最看重房贷优惠 二套房利率上浮5%</a></li>
-                        <li><span>2015-04-17</span><a href="">今年海外购房额或达350亿美元 中国房东将遍布世界</a></li>
-                        <li><span>2015-04-17</span><a href="">今年海外购房额或达350亿美元 中国房东将遍布世界</a></li>
-                        <li><span>2015-04-17</span><a href="">今年海外购房额或达350亿美元 中国房东将遍布世界</a></li>
-                        <li><span>2015-04-17</span><a href="">今年海外购房额或达350亿美元 中国房东将遍布世界</a></li>
+                        <template v-for="(news, index) in top_news">
+                            <li class="tit" v-if="index%5==0">
+                                <a href="">{{ news.title }}</a>
+                            </li>
+                            <li v-else>
+                                <span>{{ news.create_time|formatDate }}</span><a href="">{{ news.title }}</a>
+                            </li>
+                        </template>
+
                     </ul>
                 </div>
 
+
                 <div class="left-220">
                     <ul class="side-img-list">
-                        <li>
+
+                        <!-- 格式化显示图片新闻 -->
+                        <li v-for="(news, index) in image_news">
                             <div class="img-box">
-                                <label>1</label>
-                                <img src=""/>
+                                <label>{{ index+1 }}</label>
+                                <img :src="news.img_url"/>
                             </div>
                             <div class="txt-box">
-                                <a href="">易车总裁邵京宁：汽车行业电商化的三个阶段</a>
-                                <span>2015-04-16</span>
-                            </div>
-                        </li>
-                        <li>
-                            <div class="img-box">
-                                <label>2</label>
-                                <img src=""/>
-                            </div>
-                            <div class="txt-box">
-                                <a href="">易车总裁邵京宁：汽车行业电商化的三个阶段</a>
-                                <span>2015-04-16</span>
-                            </div>
-                        </li>
-                        <li>
-                            <div class="img-box">
-                                <label>3</label>
-                                <img src=""/>
-                            </div>
-                            <div class="txt-box">
-                                <a href="">易车总裁邵京宁：汽车行业电商化的三个阶段</a>
-                                <span>2015-04-16</span>
-                            </div>
-                        </li>
-                        <li>
-                            <div class="img-box">
-                                <label>4</label>
-                                <img src=""/>
-                            </div>
-                            <div class="txt-box">
-                                <a href="">易车总裁邵京宁：汽车行业电商化的三个阶段</a>
-                                <span>2015-04-16</span>
+                                <a href="">{{ news.title }}</a>
+                                <span>{{ news.create_time | formatDate }}</span>
                             </div>
                         </li>
                     </ul>
@@ -149,416 +101,60 @@
 
     <!--分类推荐-->
     <div class="section">
-        
-        <!--子类-->
-        <div class="main-tit">
-            <h2>互联网媒体</h2>
-            <p>
-                
-                <a href="">人物动态</a>
-                
-                <a href="">电子商务</a>
-                
-                <a href="">传闻爆料</a>
-                
-            </p>
-        </div>
 
-        <!--/子类-->
-        <div class="wrapper clearfix">
-            <div class="wrap-box">
-                <!--左边-->
-                <div class="left-925">
-                    <div class="pad-15 bg-wrap">
-                        <ul class="rel-list">
-
-                            <li>
-                                <div class="img-box">
-                                    <a title="电商下乡，京东、苏宁、阿里农村遭遇战打响？" href="">
-                                        <img src="">
-                                    </a>
-                                </div>
-                                <div class="info">
-                                    <h3><a title="电商下乡，京东、苏宁、阿里农村遭遇战打响？"
-                                           href="">电商下乡，京东、苏宁、阿里农村遭遇战打响？</a>
-                                    </h3>
-                                    <p>
-                                        2015年，各大电商逐鹿广袤的农村市场，一场圈地运动正在上演，焦点之战在家电市场首先展开。4月9日，京东公布农村电商发展的阶段性成果，其中定位于农村大家电营销、配送、安装、维修的京东帮服务店表现抢眼——4个月时间，开设了超过…</p>
-                                    <span>2015/4/16 13:29:20</span>
-                                </div>
-                            </li>
-
-                            <li>
-                                <div class="img-box">
-                                    <a title="电商下乡，京东、苏宁、阿里农村遭遇战打响？" href="">
-                                        <img src="">
-                                    </a>
-                                </div>
-                                <div class="info">
-                                    <h3><a title="电商下乡，京东、苏宁、阿里农村遭遇战打响？"
-                                           href="">电商下乡，京东、苏宁、阿里农村遭遇战打响？</a>
-                                    </h3>
-                                    <p>
-                                        2015年，各大电商逐鹿广袤的农村市场，一场圈地运动正在上演，焦点之战在家电市场首先展开。4月9日，京东公布农村电商发展的阶段性成果，其中定位于农村大家电营销、配送、安装、维修的京东帮服务店表现抢眼——4个月时间，开设了超过…</p>
-                                    <span>2015/4/16 13:29:20</span>
-                                </div>
-                            </li>
-
-                            <li>
-                                <div class="img-box">
-                                    <a title="电商下乡，京东、苏宁、阿里农村遭遇战打响？" href="">
-                                        <img src="">
-                                    </a>
-                                </div>
-                                <div class="info">
-                                    <h3><a title="电商下乡，京东、苏宁、阿里农村遭遇战打响？"
-                                           href="">电商下乡，京东、苏宁、阿里农村遭遇战打响？</a>
-                                    </h3>
-                                    <p>
-                                        2015年，各大电商逐鹿广袤的农村市场，一场圈地运动正在上演，焦点之战在家电市场首先展开。4月9日，京东公布农村电商发展的阶段性成果，其中定位于农村大家电营销、配送、安装、维修的京东帮服务店表现抢眼——4个月时间，开设了超过…</p>
-                                    <span>2015/4/16 13:29:20</span>
-                                </div>
-                            </li>
-
-                            <li>
-                                <div class="img-box">
-                                    <a title="电商下乡，京东、苏宁、阿里农村遭遇战打响？" href="">
-                                        <img src="">
-                                    </a>
-                                </div>
-                                <div class="info">
-                                    <h3><a title="电商下乡，京东、苏宁、阿里农村遭遇战打响？"
-                                           href="">电商下乡，京东、苏宁、阿里农村遭遇战打响？</a>
-                                    </h3>
-                                    <p>
-                                        2015年，各大电商逐鹿广袤的农村市场，一场圈地运动正在上演，焦点之战在家电市场首先展开。4月9日，京东公布农村电商发展的阶段性成果，其中定位于农村大家电营销、配送、安装、维修的京东帮服务店表现抢眼——4个月时间，开设了超过…</p>
-                                    <span>2015/4/16 13:29:20</span>
-                                </div>
-                            </li>
-
-                        </ul>
-                    </div>
-                </div>
-                <!--/左边-->
-
-                <!--右边-->
-                <div class="left-220">
-                    <div class="pad-15 bg-wrap">
-                        <ul class="focus-list">
-
-                            <li>
-                                <label class="hot">1</label>
-                                <a href="upload">中国首个东盟电子商务平台“美丽湾”启动</a>
-                            </li>
-                            <li>
-                                <label>2</label>
-                                <a href="upload">中国首个东盟电子商务平台“美丽湾”启动</a>
-                            </li>
-                            <li>
-                                <label>3</label>
-                                <a href="upload">中国首个东盟电子商务平台“美丽湾”启动</a>
-                            </li>
-                            <li>
-                                <label>4</label>
-                                <a href="upload">中国首个东盟电子商务平台“美丽湾”启动</a>
-                            </li>
-                            <li>
-                                <label>5</label>
-                                <a href="upload">中国首个东盟电子商务平台“美丽湾”启动</a>
-                            </li>
-                            <li>
-                                <label>6</label>
-                                <a href="upload">中国首个东盟电子商务平台“美丽湾”启动</a>
-                            </li>
-                            <li>
-                                <label>7</label>
-                                <a href="upload">中国首个东盟电子商务平台“美丽湾”启动</a>
-                            </li>
-                            <li>
-                                <label>8</label>
-                                <a href="upload">中国首个东盟电子商务平台“美丽湾”启动</a>
-                            </li>
-
-                        </ul>
-                    </div>
-                </div>
-                <!--/右边-->
+        <template v-for="(category, index) in categories">
+            <!--子类-->
+            <div class="main-tit">
+                <h2>{{ category.title }}</h2>
+                <p>
+                    <a href="" v-for="subCategory in category.newscategory_set">{{ subCategory.title }}</a>
+                    <a href="">更多<i>+</i></a>
+                </p>
             </div>
-        </div>
+            <!--/子类-->
+            <div class="wrapper clearfix">
+                <div class="wrap-box">
+                    <!--左边-->
+                    <div class="left-925">
+                        <div class="pad-15 bg-wrap">
+                            <ul class="rel-list">
 
-     
-        <!--子类-->
-        <div class="main-tit">
-            <h2>科技财经</h2>
-            <p>
-                
-                <a href="">IT业界</a>
-                
-                <a href="">经济民生</a>
-                
-                <a href="">数码产品</a>
-                
-            </p>
-        </div>
+                                <li v-for="(news, index) in category.news">
+                                    <div class="img-box">
+                                        <a :title="news.title" href="">
+                                            <img :src="news.img_url">
+                                        </a>
+                                    </div>
+                                    <div class="info">
+                                        <h3><a :title="news.title"
+                                               href="">{{ news.title }}</a></h3>
+                                        <p>{{ news.zhaiyao }}</p>
+                                        <span>{{ news.create_time|formatDate2 }}</span>
+                                    </div>
+                                </li>
 
-        <!--/子类-->
-        <div class="wrapper clearfix">
-            <div class="wrap-box">
-                <!--左边-->
-                <div class="left-925">
-                    <div class="pad-15 bg-wrap">
-                        <ul class="rel-list">
+                            </ul>
+                        </div>
+                    </div>
 
-                            <li>
-                                <div class="img-box">
-                                    <a title="电商下乡，京东、苏宁、阿里农村遭遇战打响？" href="">
-                                        <img src="">
-                                    </a>
-                                </div>
-                                <div class="info">
-                                    <h3><a title="电商下乡，京东、苏宁、阿里农村遭遇战打响？"
-                                           href="">电商下乡，京东、苏宁、阿里农村遭遇战打响？</a>
-                                    </h3>
-                                    <p>
-                                        2015年，各大电商逐鹿广袤的农村市场，一场圈地运动正在上演，焦点之战在家电市场首先展开。4月9日，京东公布农村电商发展的阶段性成果，其中定位于农村大家电营销、配送、安装、维修的京东帮服务店表现抢眼——4个月时间，开设了超过…</p>
-                                    <span>2015/4/16 13:29:20</span>
-                                </div>
-                            </li>
+                    <!--右边-->
+                    <div class="left-220">
+                        <div class="pad-15 bg-wrap">
+                            <ul class="focus-list">
 
-                            <li>
-                                <div class="img-box">
-                                    <a title="电商下乡，京东、苏宁、阿里农村遭遇战打响？" href="">
-                                        <img src="">
-                                    </a>
-                                </div>
-                                <div class="info">
-                                    <h3><a title="电商下乡，京东、苏宁、阿里农村遭遇战打响？"
-                                           href="">电商下乡，京东、苏宁、阿里农村遭遇战打响？</a>
-                                    </h3>
-                                    <p>
-                                        2015年，各大电商逐鹿广袤的农村市场，一场圈地运动正在上演，焦点之战在家电市场首先展开。4月9日，京东公布农村电商发展的阶段性成果，其中定位于农村大家电营销、配送、安装、维修的京东帮服务店表现抢眼——4个月时间，开设了超过…</p>
-                                    <span>2015/4/16 13:29:20</span>
-                                </div>
-                            </li>
+                                <li v-for="(news, index) in category.top8">
+                                    <label class="hot" v-if="index==0">{{ index+1 }}</label>
+                                    <label v-else>{{ index+1 }}</label>
+                                    <a href="">{{ news.title }}</a>
+                                </li>
 
-                            <li>
-                                <div class="img-box">
-                                    <a title="电商下乡，京东、苏宁、阿里农村遭遇战打响？" href="">
-                                        <img src="">
-                                    </a>
-                                </div>
-                                <div class="info">
-                                    <h3><a title="电商下乡，京东、苏宁、阿里农村遭遇战打响？"
-                                           href="">电商下乡，京东、苏宁、阿里农村遭遇战打响？</a>
-                                    </h3>
-                                    <p>
-                                        2015年，各大电商逐鹿广袤的农村市场，一场圈地运动正在上演，焦点之战在家电市场首先展开。4月9日，京东公布农村电商发展的阶段性成果，其中定位于农村大家电营销、配送、安装、维修的京东帮服务店表现抢眼——4个月时间，开设了超过…</p>
-                                    <span>2015/4/16 13:29:20</span>
-                                </div>
-                            </li>
-
-                            <li>
-                                <div class="img-box">
-                                    <a title="电商下乡，京东、苏宁、阿里农村遭遇战打响？" href="">
-                                        <img src="">
-                                    </a>
-                                </div>
-                                <div class="info">
-                                    <h3><a title="电商下乡，京东、苏宁、阿里农村遭遇战打响？"
-                                           href="">电商下乡，京东、苏宁、阿里农村遭遇战打响？</a>
-                                    </h3>
-                                    <p>
-                                        2015年，各大电商逐鹿广袤的农村市场，一场圈地运动正在上演，焦点之战在家电市场首先展开。4月9日，京东公布农村电商发展的阶段性成果，其中定位于农村大家电营销、配送、安装、维修的京东帮服务店表现抢眼——4个月时间，开设了超过…</p>
-                                    <span>2015/4/16 13:29:20</span>
-                                </div>
-                            </li>
-
-                        </ul>
+                            </ul>
+                        </div>
                     </div>
                 </div>
-                <!--/左边-->
-
-                <!--右边-->
-                <div class="left-220">
-                    <div class="pad-15 bg-wrap">
-                        <ul class="focus-list">
-
-                            <li>
-                                <label class="hot">1</label>
-                                <a href="upload">中国首个东盟电子商务平台“美丽湾”启动</a>
-                            </li>
-                            <li>
-                                <label>2</label>
-                                <a href="upload">中国首个东盟电子商务平台“美丽湾”启动</a>
-                            </li>
-                            <li>
-                                <label>3</label>
-                                <a href="upload">中国首个东盟电子商务平台“美丽湾”启动</a>
-                            </li>
-                            <li>
-                                <label>4</label>
-                                <a href="upload">中国首个东盟电子商务平台“美丽湾”启动</a>
-                            </li>
-                            <li>
-                                <label>5</label>
-                                <a href="upload">中国首个东盟电子商务平台“美丽湾”启动</a>
-                            </li>
-                            <li>
-                                <label>6</label>
-                                <a href="upload">中国首个东盟电子商务平台“美丽湾”启动</a>
-                            </li>
-                            <li>
-                                <label>7</label>
-                                <a href="upload">中国首个东盟电子商务平台“美丽湾”启动</a>
-                            </li>
-                            <li>
-                                <label>8</label>
-                                <a href="upload">中国首个东盟电子商务平台“美丽湾”启动</a>
-                            </li>
-
-                        </ul>
-                    </div>
-                </div>
-                <!--/右边-->
             </div>
-        </div>
+        </template>
 
-     
-        <!--子类-->
-        <div class="main-tit">
-            <h2>汽车房产</h2>
-            <p>
-                
-                <a href="">新车行情</a>
-                
-                <a href="">房产动态</a>
-                
-            </p>
-        </div>
-
-        <!--/子类-->
-        <div class="wrapper clearfix">
-            <div class="wrap-box">
-                <!--左边-->
-                <div class="left-925">
-                    <div class="pad-15 bg-wrap">
-                        <ul class="rel-list">
-
-                            <li>
-                                <div class="img-box">
-                                    <a title="电商下乡，京东、苏宁、阿里农村遭遇战打响？" href="">
-                                        <img src="">
-                                    </a>
-                                </div>
-                                <div class="info">
-                                    <h3><a title="电商下乡，京东、苏宁、阿里农村遭遇战打响？"
-                                           href="">电商下乡，京东、苏宁、阿里农村遭遇战打响？</a>
-                                    </h3>
-                                    <p>
-                                        2015年，各大电商逐鹿广袤的农村市场，一场圈地运动正在上演，焦点之战在家电市场首先展开。4月9日，京东公布农村电商发展的阶段性成果，其中定位于农村大家电营销、配送、安装、维修的京东帮服务店表现抢眼——4个月时间，开设了超过…</p>
-                                    <span>2015/4/16 13:29:20</span>
-                                </div>
-                            </li>
-
-                            <li>
-                                <div class="img-box">
-                                    <a title="电商下乡，京东、苏宁、阿里农村遭遇战打响？" href="">
-                                        <img src="">
-                                    </a>
-                                </div>
-                                <div class="info">
-                                    <h3><a title="电商下乡，京东、苏宁、阿里农村遭遇战打响？"
-                                           href="">电商下乡，京东、苏宁、阿里农村遭遇战打响？</a>
-                                    </h3>
-                                    <p>
-                                        2015年，各大电商逐鹿广袤的农村市场，一场圈地运动正在上演，焦点之战在家电市场首先展开。4月9日，京东公布农村电商发展的阶段性成果，其中定位于农村大家电营销、配送、安装、维修的京东帮服务店表现抢眼——4个月时间，开设了超过…</p>
-                                    <span>2015/4/16 13:29:20</span>
-                                </div>
-                            </li>
-
-                            <li>
-                                <div class="img-box">
-                                    <a title="电商下乡，京东、苏宁、阿里农村遭遇战打响？" href="">
-                                        <img src="">
-                                    </a>
-                                </div>
-                                <div class="info">
-                                    <h3><a title="电商下乡，京东、苏宁、阿里农村遭遇战打响？"
-                                           href="">电商下乡，京东、苏宁、阿里农村遭遇战打响？</a>
-                                    </h3>
-                                    <p>
-                                        2015年，各大电商逐鹿广袤的农村市场，一场圈地运动正在上演，焦点之战在家电市场首先展开。4月9日，京东公布农村电商发展的阶段性成果，其中定位于农村大家电营销、配送、安装、维修的京东帮服务店表现抢眼——4个月时间，开设了超过…</p>
-                                    <span>2015/4/16 13:29:20</span>
-                                </div>
-                            </li>
-
-                            <li>
-                                <div class="img-box">
-                                    <a title="电商下乡，京东、苏宁、阿里农村遭遇战打响？" href="">
-                                        <img src="">
-                                    </a>
-                                </div>
-                                <div class="info">
-                                    <h3><a title="电商下乡，京东、苏宁、阿里农村遭遇战打响？"
-                                           href="">电商下乡，京东、苏宁、阿里农村遭遇战打响？</a>
-                                    </h3>
-                                    <p>
-                                        2015年，各大电商逐鹿广袤的农村市场，一场圈地运动正在上演，焦点之战在家电市场首先展开。4月9日，京东公布农村电商发展的阶段性成果，其中定位于农村大家电营销、配送、安装、维修的京东帮服务店表现抢眼——4个月时间，开设了超过…</p>
-                                    <span>2015/4/16 13:29:20</span>
-                                </div>
-                            </li>
-
-                        </ul>
-                    </div>
-                </div>
-                <!--/左边-->
-
-                <!--右边-->
-                <div class="left-220">
-                    <div class="pad-15 bg-wrap">
-                        <ul class="focus-list">
-
-                            <li>
-                                <label class="hot">1</label>
-                                <a href="upload">中国首个东盟电子商务平台“美丽湾”启动</a>
-                            </li>
-                            <li>
-                                <label>2</label>
-                                <a href="upload">中国首个东盟电子商务平台“美丽湾”启动</a>
-                            </li>
-                            <li>
-                                <label>3</label>
-                                <a href="upload">中国首个东盟电子商务平台“美丽湾”启动</a>
-                            </li>
-                            <li>
-                                <label>4</label>
-                                <a href="upload">中国首个东盟电子商务平台“美丽湾”启动</a>
-                            </li>
-                            <li>
-                                <label>5</label>
-                                <a href="upload">中国首个东盟电子商务平台“美丽湾”启动</a>
-                            </li>
-                            <li>
-                                <label>6</label>
-                                <a href="upload">中国首个东盟电子商务平台“美丽湾”启动</a>
-                            </li>
-                            <li>
-                                <label>7</label>
-                                <a href="upload">中国首个东盟电子商务平台“美丽湾”启动</a>
-                            </li>
-                            <li>
-                                <label>8</label>
-                                <a href="upload">中国首个东盟电子商务平台“美丽湾”启动</a>
-                            </li>
-
-                        </ul>
-                    </div>
-                </div>
-                <!--/右边-->
-            </div>
-        </div>
-
-     
     </div>
     <!--/分类推荐-->
 </div>
@@ -567,6 +163,10 @@
 <div id="footer"></div>
 <script>$("#footer").load("_footer.html");</script>
 <!--/页面底部-->
+
+<script type="text/javascript" src="js/vue-2.5.16.js"></script>
+<script type="text/javascript" src="js/axios-0.18.0.min.js"></script>
+<script src="js/news.js"></script>
 
 </body>
 </html>
