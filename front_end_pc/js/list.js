@@ -25,7 +25,22 @@ var vm = new Vue({
             } else {
                 query_string = '?ordering=' + this.ordering;
             }
+            this.category = this.get_query_string('category');
 			//发送请求
+            axios.get('http://127.0.0.1:8000/goods/list/', {
+                    params: {
+                        category_id: this.category,
+                        ordering: this.ordering
+                    },
+                })
+                .then(response => {
+
+                    this.goods_list = response.data;
+
+                })
+                .catch(error=>{
+                    console.log(error.response);
+                })
         },
 
         // 获取当前显示的类别
@@ -33,6 +48,19 @@ var vm = new Vue({
             // 获取url中的类别id
             var category_id = this.get_query_string('category');
             //发送请求
+            axios.get('http://127.0.0.1:8000/goods/catelist/', {
+                    params: {
+                        category_id: this.category,
+                    },
+                })
+                .then(response => {
+
+                    this.category = response.data;
+
+                })
+                .catch(error=>{
+                    console.log(error.response);
+                })
         },
 
         // 获取url路径参数

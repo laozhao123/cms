@@ -5,7 +5,7 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from goods.models import Goods, GoodsCategory
-from goods.serializer import GoodsSerializer, CateSerializer
+from goods.serializer import GoodsSerializer, CateSerializer, SonSerializer
 
 
 class TopGoods(APIView):
@@ -42,3 +42,45 @@ class CateGoods(APIView):
             lis.append(bcat_data)
 
         return Response(lis)
+
+
+class ListGoods(APIView):
+
+    def get(self,request):
+
+        cat_id=request.query_params.get('category_id')
+        ordering=request.query_params.get('ordering')
+
+        cat=GoodsCategory.objects.get(id=cat_id)
+
+        if cat.parent_id == 0:
+            pass
+        if ordering:
+            goods=Goods.objects.filter(category_id=cat_id).order_by('-'+ordering).all()
+        else:
+            goods = Goods.objects.filter(category_id=cat_id).all()
+        goods_data=GoodsSerializer(goods,many=True).data
+
+        return Response(goods_data)
+
+
+class ListCatView(APIView):
+
+    def get(self,request):
+
+        cat_id = request.query_params.get('category_id')
+
+        cat=GoodsCategory.objects.get(id=cat_id)
+
+        cat_par=cat.parent
+
+        cat_data=SonSerializer(cat).data
+
+        cat_data['parent']=''
+
+        if cat_par:
+            cat_data_par=SonSerializer(cat_par).data
+
+            cat_data['parent']=cat_data_par
+
+        return Response(cat_data)
