@@ -2,6 +2,7 @@ import re
 
 from django_redis import get_redis_connection
 from rest_framework import serializers
+from rest_framework_jwt.settings import api_settings
 
 from news.models import News, NewsCategory
 from users.models import User
@@ -13,6 +14,7 @@ class UserSerializer(serializers.ModelSerializer):
     allow=serializers.BooleanField(label='是否同意',write_only=True)
     sms_code=serializers.CharField(label='验证码',write_only=True)
     password2=serializers.CharField(label='密码2',write_only=True)
+    token=serializers.CharField(label='登录状态token',read_only=True)
 
 
     def validate_allow(self, value):
@@ -48,16 +50,27 @@ class UserSerializer(serializers.ModelSerializer):
 
     def create(self, validated_data):
 
-        return  User.objects.create_user(
+        user=User.objects.create_user(
             username=validated_data.get('username'),
             mobile=validated_data.get('mobile'),
             password=validated_data.get('password'),
         )
+        # 注册成功自动登录，需要生成jwt并返回给客户端
+        # 导包： from rest_framework_jwt.settings import api_settings
+        jwt_payload_handler=api_settings.JWT_PAYLOAD_HANDLER
+        jwt_encode_handler=api_settings.JWT_ENCODE_HANDLER
+
+        payload=jwt_payload_handler(user)
+        token=jwt_encode_handler(payload)
+
+        user.token=token
+
+        return user
 
     class Meta:
         model=User
         fields=('id', 'username', 'password', 'password2',
-                  'sms_code', 'mobile', 'allow')
+                  'sms_code', 'mobile', 'allow','token')
 
         extra_kwargs = {
             'username': {

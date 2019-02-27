@@ -146,6 +146,7 @@ var vm = new Vue({
         // 点击注册按钮
         on_submit: function () {
 
+
             this.check_username();
             this.check_pwd();
             this.check_cpwd();
@@ -168,6 +169,15 @@ var vm = new Vue({
                     };
                 axios.post('http://127.0.0.1:8000/register/',data)
                     .then(response=>{
+
+                        // 清除之前保存的数据
+                        sessionStorage.clear();
+                        localStorage.clear();
+                        // 保存用户的登录状态数据
+                        localStorage.token = response.data.token;
+                        localStorage.username = response.data.username;
+                        localStorage.user_id = response.data.id;
+
                         location.href = '/index.html';      // 跳转到首页
                     })
                     .catch(error=>{

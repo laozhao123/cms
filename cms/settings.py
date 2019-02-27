@@ -9,7 +9,7 @@ https://docs.djangoproject.com/en/1.11/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/1.11/ref/settings/
 """
-
+import datetime
 import os
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
@@ -197,3 +197,26 @@ CACHES = {
 AUTH_USER_MODEL = 'users.User'
 
 GENERATED_STATIC_HTML_FILES_DIR=os.path.join(BASE_DIR,'front_end_pc')
+
+
+REST_FRAMEWORK = {
+    # 配置项目支持的认证方式
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework_jwt.authentication.JSONWebTokenAuthentication',  # jwt认证
+        'rest_framework.authentication.SessionAuthentication',			 # 管理后台使用
+        'rest_framework.authentication.BasicAuthentication',
+    ),
+
+}
+
+# jwt认证配置
+JWT_AUTH = {    # 导包： import datetime
+    'JWT_EXPIRATION_DELTA': datetime.timedelta(days=1),  	# jwt有效时间
+    # 修改登录成功接口返回的响应参数， 新增 user_id 和 username两个字段
+    'JWT_RESPONSE_PAYLOAD_HANDLER': 'users.utils.jwt_response_payload_handler',
+}
+
+# 扩展登录接口: 使用自定义的认证后台, 使之支持可以使用用户名或手机号登录
+AUTHENTICATION_BACKENDS = [
+    'users.utils.UsernameMobileAuthBackend',
+]

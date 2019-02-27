@@ -86,3 +86,6 @@ class ChecknameView(APIView):
 class RegisterView(CreateAPIView):
 
     serializer_class =UserSerializer
+
+
+
