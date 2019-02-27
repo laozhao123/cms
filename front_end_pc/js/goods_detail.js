@@ -4,7 +4,7 @@ var vm = new Vue({
         host: 'http://127.0.0.1:8000',
         goods: null,
         recommend_goods: null,
-
+        category:null,
         count: 1,            // 添加到购物车的商品数量
         goods_id: 0,         // 当前显示的商品id
     },
@@ -31,7 +31,16 @@ var vm = new Vue({
         // 获取推荐商品
         get_recommend_goods: function () {
 			//发送请求
-            
+            axios.get(this.host+'/goods/detail_cat/?id='+this.goods_id)
+                .then(response=>{
+                    this.category=response.data;
+                    this.recommend_goods=response.data['recommend_goods'];
+                    this.goods=response.data['goods'];
+
+            })
+                .catch(error=>{
+                    console.log(error.response)
+                })
         },
 
         addToCart: function() {

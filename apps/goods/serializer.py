@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from goods.models import Goods, GoodsCategory
+from goods.models import Goods, GoodsCategory, GoodsAlbum
 
 
 class GoodsSerializer(serializers.ModelSerializer):
@@ -22,4 +22,9 @@ class CateSerializer(serializers.ModelSerializer):
         model=GoodsCategory
         fields=('id','title','goodscategory_set')
 
+
+class GoodsAlbumSerializer(serializers.ModelSerializer):
+    class Meta:
+        model=GoodsAlbum
+        fields=('__all__')
 

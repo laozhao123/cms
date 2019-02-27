@@ -5,7 +5,7 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from goods.models import Goods, GoodsCategory
-from goods.serializer import GoodsSerializer, CateSerializer, SonSerializer
+from goods.serializer import GoodsSerializer, CateSerializer, SonSerializer, GoodsAlbumSerializer
 
 
 class TopGoods(APIView):
@@ -56,11 +56,10 @@ class ListGoods(APIView):
         if cat.parent_id == 0:
             pass
         if ordering:
-            goods=Goods.objects.filter(category_id=cat_id).order_by('-'+ordering).all()
+            goods=Goods.objects.filter(category_id=cat_id).order_by(ordering).all()
         else:
             goods = Goods.objects.filter(category_id=cat_id).all()
         goods_data=GoodsSerializer(goods,many=True).data
-
         return Response(goods_data)
 
 
@@ -82,5 +81,40 @@ class ListCatView(APIView):
             cat_data_par=SonSerializer(cat_par).data
 
             cat_data['parent']=cat_data_par
+
+        return Response(cat_data)
+
+
+class DetailCatView(APIView):
+    def get(self,request):
+        id = request.query_params.get('id')
+
+        goods = Goods.objects.get(id=id)
+
+        cat=goods.category
+
+        cat_par = cat.parent
+
+        cat_data = SonSerializer(cat).data
+
+
+        cat_data_par = SonSerializer(cat_par).data
+
+        cat_data['parent'] = cat_data_par
+
+        recommend_goods=Goods.objects.filter(category_id=cat.id).exclude(id=id)
+
+        recommend_goods=GoodsSerializer(recommend_goods,many=True).data
+
+        cat_data['recommend_goods'] = recommend_goods
+        goods_data = GoodsSerializer(goods).data
+
+        goodsalbum_set=goods.goodsalbum_set.all()
+
+        goodsalbum_set=GoodsAlbumSerializer(goodsalbum_set,many=True).data
+
+        goods_data['goodsalbum_set']=goodsalbum_set
+
+        cat_data['goods'] = goods_data
 
         return Response(cat_data)
