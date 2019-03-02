@@ -8,4 +8,5 @@ urlpatterns = [
     url(r'^list/$',views.ListGoods.as_view()),
     url(r'^catelist/$',views.ListCatView.as_view()),
     url(r'^detail_cat/$',views.DetailCatView.as_view()),
+    url(r'^cart/$',views.DetailCatView.as_view()),
 ]

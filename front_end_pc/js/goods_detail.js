@@ -7,6 +7,7 @@ var vm = new Vue({
         category:null,
         count: 1,            // 添加到购物车的商品数量
         goods_id: 0,         // 当前显示的商品id
+        token : sessionStorage.token || localStorage.token,
     },
 
     mounted: function() {
@@ -47,7 +48,23 @@ var vm = new Vue({
             // 添加商品到购物车
             if (this.is_login()) {  // 已经登录
                 //发送登录请求
-				
+				config={
+				        headers: {
+                    'Authorization': 'JWT ' + this.token
+                },
+                    withCredentials: true   // 注意： 跨域请求传递cookie给服务器
+                };
+				data={
+				    sku_id:parseInt(this.goods_id),
+                    count:this.count
+                };
+				axios.post(this.host+'/cart/',data,config)
+                    .then(response=>{
+                        alert('添加成功')
+                    })
+                    .catch(error=>{
+                        console.log(error.response)
+                    })
 			
                
             } else {

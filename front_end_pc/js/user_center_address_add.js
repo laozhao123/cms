@@ -30,7 +30,15 @@ var vm = new Vue({
 
     mounted: function () {
         // 获取所有的省份,发送请求
-		
+		axios.get('http://127.0.0.1:8000/areas/')
+            .then(response=>{
+                this.provinces=response.data
+            })
+            .catch(error=>{
+                console.log(error.response)
+            })
+
+
         
     },
 
@@ -39,6 +47,13 @@ var vm = new Vue({
         'form_address.province_id': function () {
             if (this.form_address.province_id) {
                 //发送请求
+                axios.get('http://127.0.0.1:8000/areas/'+this.form_address.province_id+'/')
+            .then(response=>{
+                this.cities=response.data['subs']
+            })
+            .catch(error=>{
+                console.log(error.response)
+            })
             }
         },
 
@@ -46,6 +61,13 @@ var vm = new Vue({
         'form_address.city_id': function () {
             if (this.form_address.city_id) {
                //发送请求
+                 axios.get('http://127.0.0.1:8000/areas/'+this.form_address.city_id+'/')
+            .then(response=>{
+                this.districts=response.data['subs']
+            })
+            .catch(error=>{
+                console.log(error.response)
+            })
             }
         }
     },
@@ -110,6 +132,18 @@ var vm = new Vue({
             } else {
                 this.form_address.title = this.form_address.receiver;
                 // 新增地址,发送请求
+                config={
+                     headers: {
+                    'Authorization': 'JWT ' + this.token
+                }
+                };
+                    axios.post('http://127.0.0.1:8000/address/',this.form_address,config)
+                        .then(response=>{
+                            this.addresses.splice(0,0,response.data);
+                        })
+                        .catch(error=>{
+                            console.log(error.response.data);
+                        })
                 
             }
         },

@@ -4,6 +4,8 @@
         host: 'http://127.0.0.1:8000',
         goods_list: [],         // 购物车中的商品
         origin_input: 1,        // 商品数量
+        token: sessionStorage.token || localStorage.token,
+
     },
 
     computed: {
@@ -20,6 +22,7 @@
 
         // 获取选中的商品的数量
         selected_count: function() {
+
             let total_count = 0;
             for (let i = 0; i < this.goods_list.length; i++) {
                 let goods = this.goods_list[i];
@@ -48,6 +51,7 @@
 
     mounted: function () {
         this.get_cart_goods();
+
     },
 
     methods: {
@@ -62,6 +66,20 @@
         // 获取购物车商品数据
         get_cart_goods: function () {
            //发送请求
+            config={
+				        headers: {
+                    'Authorization': 'JWT ' + this.token
+                },
+                    withCredentials: true   // 注意： 跨域请求传递cookie给服务器
+                };
+				axios.get(this.host+'/cart/',config)
+                    .then(response=>{
+                        this.goods_list=response.data;
+                        this.origin_input= this.goods_list.length;
+                    })
+                    .catch(error=>{
+                        console.log(error.response)
+                    })
         },
 
         // 点击增加购买数量
