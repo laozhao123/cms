@@ -113,6 +113,51 @@ class addView(APIView):
         return Response(s.data)
 
 
+    def put(self,request):
+
+        user=request.user
+
+        redis_store=get_redis_connection('cart')
+
+        s = CartSerializer(data=request.data)
+        s.is_valid(raise_exception=True)
+
+        # 获取请求参数
+        sku_id = s.validated_data.get('sku_id')
+        count = s.validated_data.get('count')
+        selected = s.validated_data.get('selected')
+
+        redis_store.hset('cart_%s' % user.id,sku_id,count)
+
+        if selected:
+            redis_store.sadd('cart_selected_%s' % user.id, sku_id)
+        else:
+            redis_store.srem('cart_selected_%s' % user.id, sku_id)
+
+        return Response(s.data)
+
+
+    def delete(self,request):
+        user=request.user
+        sku_id=request.data.get('sku_id')
+
+        try:
+            Goods.objects.get(id=sku_id)
+        except:
+            return Response({'message':'商品不存在'},status=400)
+
+
+        rs=get_redis_connection('cart')
+
+        rs.srem('cart_selected_%s' % user.id,sku_id)
+
+
+        rs.hdel('cart_%s' % user.id,sku_id)
+
+        return Response({'message':"ok"},status=204)
+
+
+
 
 
 

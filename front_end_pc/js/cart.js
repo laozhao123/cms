@@ -110,11 +110,53 @@
         // 更新购物车商品数量
         update_cart_count: function(goods_id, count, index) {
             //发送请求
+             config={
+				        headers: {
+                    'Authorization': 'JWT ' + this.token
+                },
+                    responseType: 'json',
+                    withCredentials: true   // 注意： 跨域请求传递cookie给服务器
+                };
+             data={
+                 'sku_id':goods_id,
+                 'count':count,
+             };
+            axios.put(this.host+'/cart/',data,config)
+                .then(response=>{
+                    this.goods_list[index]=response.data['count'];
+                    location.reload();
+                })
+                .catch(error=>{
+                   if ('non_field_errors' in error.response.data) {
+                            alert(error.response.data.non_field_errors[0]);
+                        } else {
+                            alert('修改购物车失败');
+                        }
+                        console.log(error.response.data);
+                        this.cart[index].count = this.origin_input;
+                })
         },
 
         // 删除购物车中的一个商品
         delete_goods: function(index){
             //发送请求
+            config={
+                data:{
+                    sku_id:this.goods_list[index].id
+                },
+                 headers:{
+                    'Authorization': 'JWT ' + this.token
+                },
+                withCredentials: true
+            };
+            axios.delete(this.host+'/cart/',config)
+                .then(response=>{
+                    alert('删除成功');
+                    location.reload();
+                })
+                .catch(error=>{
+                    console.log(error.response)
+                })
         },
 
         // 清空购物车
