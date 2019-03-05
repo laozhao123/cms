@@ -45,7 +45,7 @@ var vm = new Vue({
                     username:this.username,
                     password:this.password,
                 };
-                axios.post(this.host+'/login/',data)
+                axios.post(this.host+'/login/',data,{ withCredentials: true})
                     .then(response=>{
                         // 清除之前保存的数据
                         sessionStorage.clear();

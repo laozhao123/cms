@@ -157,8 +157,30 @@ class addView(APIView):
         return Response({'message':"ok"},status=204)
 
 
+class CartSelectAllView(APIView):
+
+    def perform_authentication(self,request):
+
+        try:
+            super().perform_authentication(request)
+        except Exception as e:
+            print(e)
 
 
 
+    def put(self,request):
 
+        user=request.user
 
+        selected=request.data.get('selected')
+
+        rs=get_redis_connection('cart')
+
+        id_lis=rs.hkeys('cart_%s' % user.id)
+
+        if selected:
+            rs.sadd('cart_selected_%s' % user.id, *id_lis)
+        else:
+            rs.srem('cart_selected_%s' % user.id,*id_lis)
+
+        return Response({'message':'ok'})

@@ -40,6 +40,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',
     'corsheaders',   # 解决跨域问题的第三方包
+    'ckeditor',  			# 富文本编辑器
+    'ckeditor_uploader',  	# 富文本编辑器上传图片模块
     'users',
     'goods',
     'news',
@@ -221,3 +223,18 @@ JWT_AUTH = {    # 导包： import datetime
 AUTHENTICATION_BACKENDS = [
     'users.utils.UsernameMobileAuthBackend',
 ]
+
+# 富文本编辑器ckeditor配置
+CKEDITOR_CONFIGS = {
+    'default': {
+        'toolbar': 'full',  # 工具条功能
+        'height': 300,  # 编辑器高度
+        # 'width': 300,    	# 编辑器宽
+    },
+}
+
+# 上传图片保存的路径，使用了FastDFS后，此路径用不到
+CKEDITOR_UPLOAD_PATH = 'uploads/'
+
+# 指定使用自定义的文件存储类
+DEFAULT_FILE_STORAGE = 'utils.mystorage.MyStorage'

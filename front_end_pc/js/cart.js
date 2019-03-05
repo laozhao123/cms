@@ -61,6 +61,29 @@
             for (let i = 0; i < this.goods_list.length; i++) {
                 this.goods_list[i].selected = select;
             }
+            config={
+				        headers: {
+                    'Authorization': 'JWT ' + this.token
+                },
+                    responseType: 'json',
+                    withCredentials: true   // 注意： 跨域请求传递cookie给服务器
+                };
+             data={
+                 'selected':select
+             };
+            axios.put(this.host+'/cart/selection/',data,config)
+                .then(response=>{
+                    // 设置商品全选或全不选
+
+                })
+                .catch(error=>{
+                        console.log(error.response.data);
+
+                })
+
+
+
+
         },
 
         // 获取购物车商品数据
@@ -123,8 +146,7 @@
              };
             axios.put(this.host+'/cart/',data,config)
                 .then(response=>{
-                    this.goods_list[index]=response.data['count'];
-                    location.reload();
+                    this.goods_list[index].count=response.data['count'];
                 })
                 .catch(error=>{
                    if ('non_field_errors' in error.response.data) {
@@ -152,7 +174,7 @@
             axios.delete(this.host+'/cart/',config)
                 .then(response=>{
                     alert('删除成功');
-                    location.reload();
+                    this.goods_list.splice(index,1);
                 })
                 .catch(error=>{
                     console.log(error.response)

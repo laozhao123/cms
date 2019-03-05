@@ -8,6 +8,7 @@ var vm = new Vue({
         ordering: 'create_time',
         // 当前类别
         category: null,
+        token:sessionStorage.token || localStorage.token,
     },
 
     mounted: function () {

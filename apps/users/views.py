@@ -14,9 +14,11 @@ from rest_framework.mixins import CreateModelMixin, DestroyModelMixin, ListModel
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
+from rest_framework_jwt.views import ObtainJSONWebToken
 
 from users.models import Area
 from users.serializers import ProSerializer, CitySerializer, AdresssSerializer, DelSerializer
+from users.utils import merge_cart_cookie_to_redis
 
 
 class TestView2(APIView):
@@ -91,3 +93,21 @@ class DeladdrressView(DestroyAPIView):
 
     def get_queryset(self):
         return self.request.user.addresses
+
+
+#修改登陆后 合并cookie
+class UserAuthorizeView(ObtainJSONWebToken):
+
+
+    def post(self, request, *args, **kwargs):
+
+        response=super().post(request, *args, **kwargs)
+
+        serializer = self.get_serializer(data=request.data)
+
+        if serializer.is_valid():
+            user = serializer.object.get('user')
+
+            response=merge_cart_cookie_to_redis(request, response, user)
+
+        return response

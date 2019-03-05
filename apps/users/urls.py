@@ -6,7 +6,8 @@ from users import views
 
 urlpatterns = [
     url(r'^text/$',views.TestView2.as_view()),
-    url('login/$', obtain_jwt_token),
+    # url('login/$', obtain_jwt_token),
+    url('login/$', views.UserAuthorizeView.as_view()),
     url('areas/$', views.ProvinceView.as_view()),
     url('areas/(?P<pk>\d+)/$', views.CityView.as_view()),
     url('address/$', views.AddressView.as_view()),
