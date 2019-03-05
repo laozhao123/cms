@@ -26,7 +26,7 @@ SECRET_KEY = 'mec_7ypqm%pol-3f#uoaxev&9%w+cn@i)s)32t0-ov+py9#xlb'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['127.0.0.1','192.168.234.129']
 
 
 # Application definition
@@ -64,6 +64,9 @@ MIDDLEWARE = [
 CORS_ORIGIN_WHITELIST = (
     '127.0.0.1:8080',
     'localhost:8080',
+    'www.cms.site:8080',
+    'api.cms.site:8000',
+    'www.cms.site',
 
 
 
@@ -237,4 +240,6 @@ CKEDITOR_CONFIGS = {
 CKEDITOR_UPLOAD_PATH = 'uploads/'
 
 # 指定使用自定义的文件存储类
-DEFAULT_FILE_STORAGE = 'utils.mystorage.MyStorage'
+DEFAULT_FILE_STORAGE = 'utils.fastdfs.storage.FdfsStorage'
+
+STATIC_ROOT = os.path.join(os.path.dirname(BASE_DIR), 'front_end_pc/static')
